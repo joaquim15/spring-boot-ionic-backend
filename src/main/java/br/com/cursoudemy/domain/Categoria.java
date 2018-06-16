@@ -2,18 +2,31 @@ package br.com.cursoudemy.domain;
 
 import java.io.Serializable;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+@Entity
+@Table(name = "tb_categoria")
 public class Categoria implements Serializable {
 
-	private static final long serialVersionUID = -2204752506861143737L;
+	private static final long serialVersionUID = -3186244852388589248L;
 
-	private Long id;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Integer id;
+
+	@Column(name = "nm_categoria")
 	private String nome;
 
-	public Long getId() {
+	public Integer getId() {
 		return id;
 	}
 
-	public void setId(Long id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 
@@ -60,7 +73,7 @@ public class Categoria implements Serializable {
 		super();
 	}
 
-	public Categoria(Long id, String nome) {
+	public Categoria(Integer id, String nome) {
 		super();
 		this.id = id;
 		this.nome = nome;
