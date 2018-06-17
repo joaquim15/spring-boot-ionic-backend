@@ -9,34 +9,23 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.persistence.Table;
+import javax.persistence.OneToMany;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-
-@Entity
-@Table(name = "tb_produto")
-public class Produto implements Serializable {
+@Entity(name = "tb_estado")
+public class Estado implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "prod_id")
+	@Column(name = "est_id")
 	private Integer id;
 
-	@Column(name = "prod_nome")
+	@Column(name = "est_nome")
 	private String nome;
 
-	@Column(name = "prod_preco")
-	private Double preco;
-
-	@JsonBackReference
-	@ManyToMany
-	@JoinTable(name = "TB_PRODUTO_CATEGORIA", joinColumns = @JoinColumn(name = "produto_id"), inverseJoinColumns = @JoinColumn(name = "categoria_id"))
-	private List<Categoria> categorias = new ArrayList<>();
+	@OneToMany(mappedBy = "estado")
+	private List<Cidade> cidades = new ArrayList<Cidade>();
 
 	public Integer getId() {
 		return id;
@@ -54,30 +43,27 @@ public class Produto implements Serializable {
 		this.nome = nome;
 	}
 
-	public Double getPreco() {
-		return preco;
+	public List<Cidade> getCidades() {
+		return cidades;
 	}
 
-	public void setPreco(Double preco) {
-		this.preco = preco;
+	public void setCidades(List<Cidade> cidades) {
+		this.cidades = cidades;
 	}
 
-	public List<Categoria> getCategorias() {
-		return categorias;
+	public Estado() {
+		// TODO Auto-generated constructor stub
 	}
 
-	public void setCategorias(List<Categoria> categorias) {
-		this.categorias = categorias;
-	}
-
-	public Produto() {
-	}
-
-	public Produto(Integer id, String nome, Double preco) {
+	public Estado(Integer id, String nome) {
 		super();
 		this.id = id;
 		this.nome = nome;
-		this.preco = preco;
+	}
+
+	@Override
+	public String toString() {
+		return "Estado [id=" + id + ", nome=" + nome + "]";
 	}
 
 	@Override
@@ -96,7 +82,7 @@ public class Produto implements Serializable {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Produto other = (Produto) obj;
+		Estado other = (Estado) obj;
 		if (id == null) {
 			if (other.id != null)
 				return false;
