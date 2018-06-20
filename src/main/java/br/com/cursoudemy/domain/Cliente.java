@@ -17,6 +17,8 @@ import javax.persistence.OneToMany;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
+import br.com.cursoudemy.domain.enums.TipoCliente;
+
 @Entity(name = "tb_cliente")
 public class Cliente implements Serializable {
 
@@ -44,8 +46,11 @@ public class Cliente implements Serializable {
 	private List<Endereco> enderecos = new ArrayList<>();
 
 	@ElementCollection
-	@CollectionTable(name = "telefone")
+	@CollectionTable(name = "tb_telefone")
 	private Set<String> telefones = new HashSet<>();
+
+	@OneToMany(mappedBy = "cliente")
+	private List<Pedido> pedidos = new ArrayList<>();
 
 	public Cliente() {
 		// TODO Auto-generated constructor stub
@@ -114,6 +119,14 @@ public class Cliente implements Serializable {
 
 	public void setTelefones(Set<String> telefones) {
 		this.telefones = telefones;
+	}
+
+	public List<Pedido> getPedidos() {
+		return pedidos;
+	}
+
+	public void setPedidos(List<Pedido> pedidos) {
+		this.pedidos = pedidos;
 	}
 
 	@Override

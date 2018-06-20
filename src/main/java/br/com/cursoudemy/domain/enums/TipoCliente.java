@@ -1,4 +1,4 @@
-package br.com.cursoudemy.domain;
+package br.com.cursoudemy.domain.enums;
 
 public enum TipoCliente {
 
