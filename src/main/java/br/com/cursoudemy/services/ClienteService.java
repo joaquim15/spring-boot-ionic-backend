@@ -15,7 +15,7 @@ public class ClienteService {
 	@Autowired
 	private ClienteRepository repository;
 
-	public Cliente burcar(Integer id) {
+	public Cliente find(Integer id) {
 
 		Optional<Cliente> obj = repository.findById(id);
 
