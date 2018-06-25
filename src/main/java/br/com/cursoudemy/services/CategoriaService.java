@@ -24,7 +24,8 @@ public class CategoriaService {
 
 	public Categoria find(Integer id) {
 		Optional<Categoria> obj = repository.findById(id);
-		return obj.orElseThrow(() -> new ObjectNotFoundExeption("Objeto não encontrado! Id: " + id + ", Tipo: " + Categoria.class.getName()));
+		return obj.orElseThrow(() -> new ObjectNotFoundExeption(
+				"Objeto não encontrado! Id: " + id + ", Tipo: " + Categoria.class.getName()));
 	}
 
 	public Categoria insert(Categoria obj) {
@@ -33,14 +34,14 @@ public class CategoriaService {
 	}
 
 	public Categoria update(Categoria obj) {
-		
-		find(obj.getId());
-		
-		return this.repository.save(obj);
+
+		Categoria newObj = find(obj.getId());
+		updateData(newObj, obj);
+		return this.repository.save(newObj);
 	}
 
 	public void delete(Integer id) {
-		
+
 		find(id);
 
 		try {
@@ -61,12 +62,17 @@ public class CategoriaService {
 	public Page<Categoria> findPage(Integer page, Integer linesPorPage, String orderBy, String direction) {
 
 		PageRequest pageRequest = new PageRequest(page, linesPorPage, Direction.valueOf(direction), orderBy);
-		
+
 		return repository.findAll(pageRequest);
 
 	}
-	
+
 	public Categoria fromDTO(CategoriaDTO objDto) {
 		return new Categoria(objDto.getId(), objDto.getNome());
+	}
+
+	private void updateData(Categoria newObj, Categoria obj) {
+
+		newObj.setNome(obj.getNome());
 	}
 }
