@@ -11,9 +11,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
-import javax.validation.constraints.NotEmpty;
 
-import org.hibernate.validator.constraints.Length;
 
 @Entity
 @Table(name = "tb_categoria")
@@ -27,8 +25,6 @@ public class Categoria implements Serializable {
 	private Integer id;
 
 	@Column(name = "cat_nome")
-	@NotEmpty(message = "Preenchimento Obrigatório.")
-	@Length(min = 5, max = 80, message = "O tamanho deve ser entre 5 e 80 caracteres.")
 	private String nome;
 
 	@ManyToMany(mappedBy = "categorias")

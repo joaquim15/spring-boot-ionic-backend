@@ -13,7 +13,7 @@ import org.springframework.stereotype.Service;
 import br.com.cursoudemy.domain.Categoria;
 import br.com.cursoudemy.dto.CategoriaDTO;
 import br.com.cursoudemy.repositories.CategoriaRepository;
-import br.com.cursoudemy.services.exceptions.DataIntegrityExeption;
+import br.com.cursoudemy.services.exceptions.DataIntegrityExeception;
 import br.com.cursoudemy.services.exceptions.ObjectNotFoundExeption;
 
 @Service
@@ -24,8 +24,7 @@ public class CategoriaService {
 
 	public Categoria find(Integer id) {
 		Optional<Categoria> obj = repository.findById(id);
-		return obj.orElseThrow(() -> new ObjectNotFoundExeption(
-				"Objeto não encontrado! Id: " + id + ", Tipo: " + Categoria.class.getName()));
+		return obj.orElseThrow(() -> new ObjectNotFoundExeption("Objeto não encontrado! Id: " + id + ", Tipo: " + Categoria.class.getName()));
 	}
 
 	public Categoria insert(Categoria obj) {
@@ -34,11 +33,14 @@ public class CategoriaService {
 	}
 
 	public Categoria update(Categoria obj) {
+		
 		find(obj.getId());
+		
 		return this.repository.save(obj);
 	}
 
 	public void delete(Integer id) {
+		
 		find(id);
 
 		try {
@@ -46,7 +48,7 @@ public class CategoriaService {
 			this.repository.deleteById(id);
 
 		} catch (DataIntegrityViolationException e) {
-			throw new DataIntegrityExeption("Não possivél excluir uma categoria que possui produtos");
+			throw new DataIntegrityExeception("Não possivél excluir uma categoria que possui produtos");
 		}
 	}
 
@@ -59,6 +61,7 @@ public class CategoriaService {
 	public Page<Categoria> findPage(Integer page, Integer linesPorPage, String orderBy, String direction) {
 
 		PageRequest pageRequest = new PageRequest(page, linesPorPage, Direction.valueOf(direction), orderBy);
+		
 		return repository.findAll(pageRequest);
 
 	}
