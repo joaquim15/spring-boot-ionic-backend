@@ -7,14 +7,14 @@ public class ValidationError extends StandartError {
 
 	private static final long serialVersionUID = 1L;
 
-	private List<FildMessage> errors = new ArrayList<>();
+	private List<FieldMessage> errors = new ArrayList<>();
 
-	public List<FildMessage> getError() {
+	public List<FieldMessage> getError() {
 		return errors;
 	}
 
 	public void addError(String fildName, String message) {
-		errors.add(new FildMessage(fildName, message));
+		errors.add(new FieldMessage(fildName, message));
 	}
 
 	public ValidationError(Integer status, String msg, Long timeStamp) {
