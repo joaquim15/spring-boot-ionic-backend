@@ -15,7 +15,7 @@ public class PedidoService {
 	@Autowired
 	private PedidoRepository repository;
 
-	public Pedido burcar(Integer id) {
+	public Pedido find(Integer id) {
 
 		Optional<Pedido> obj = repository.findById(id);
 
