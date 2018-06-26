@@ -27,13 +27,13 @@ public class Cliente implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "cli_id", unique=true)
+	@Column(name = "cli_id", unique = true)
 	private Integer id;
 
 	@Column(name = "cli_nome")
 	private String nome;
 
-	@Column(name = "cli_email")
+	@Column(name = "cli_email", unique = true)
 	private String email;
 
 	@Column(name = "cli_cpfOrCnpj")
@@ -42,13 +42,13 @@ public class Cliente implements Serializable {
 	@Column(name = "cli_tipo")
 	private Integer tipoCliente;
 
-	@OneToMany(mappedBy = "cliente", cascade=CascadeType.ALL)
+	@OneToMany(mappedBy = "cliente", cascade = CascadeType.ALL)
 	private List<Endereco> enderecos = new ArrayList<>();
 
 	@ElementCollection
 	@CollectionTable(name = "tb_telefone")
 	private Set<String> telefones = new HashSet<>();
-	
+
 	@JsonIgnore
 	@OneToMany(mappedBy = "cliente")
 	private List<Pedido> pedidos = new ArrayList<>();

@@ -2,13 +2,16 @@ package br.com.cursoudemy.dto;
 
 import java.io.Serializable;
 
+import javax.persistence.Column;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 
 import org.hibernate.validator.constraints.Length;
 
 import br.com.cursoudemy.domain.Cliente;
+import br.com.cursoudemy.services.validation.ClienteUpdate;
 
+@ClienteUpdate
 public class ClienteDTO implements Serializable {
 
 	private static final long serialVersionUID = 1L;
@@ -21,6 +24,7 @@ public class ClienteDTO implements Serializable {
 
 	@NotEmpty(message = "Preenchimento Obrigatório")
 	@Email(message = "E-mail inválido.")
+	@Column(unique=true)
 	private String email;
 
 	public Integer getId() {
