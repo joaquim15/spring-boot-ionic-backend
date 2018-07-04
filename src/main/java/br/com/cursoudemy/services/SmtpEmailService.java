@@ -9,6 +9,8 @@ import org.springframework.mail.MailSender;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 
+import br.com.cursoudemy.domain.Pedido;
+
 public class SmtpEmailService extends AbstractEmailService {
 
 	@Autowired
@@ -33,5 +35,11 @@ public class SmtpEmailService extends AbstractEmailService {
 		javaMailSender.send(msg);
 		LOGGER.info("E-mail enviado.");
 
+	}
+
+	@Override
+	public void sendOrderConfirmationHtmlEmail(Pedido obj) {
+		// TODO Auto-generated method stub
+		
 	}
 }

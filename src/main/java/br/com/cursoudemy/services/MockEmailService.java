@@ -6,6 +6,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.mail.SimpleMailMessage;
 
+import br.com.cursoudemy.domain.Pedido;
+
 public class MockEmailService extends AbstractEmailService {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(MockEmailService.class);
@@ -19,11 +21,14 @@ public class MockEmailService extends AbstractEmailService {
 	}
 
 	@Override
-	public void sendHtmlEmail(MimeMessage msg) {
+	public void sendOrderConfirmationHtmlEmail(Pedido obj) {
+		// TODO Auto-generated method stub
 		
-		LOGGER.info("Simulando envio de email html...");
-		LOGGER.info(msg.toString());
-		LOGGER.info("Email enviado.");
+	}
+
+	@Override
+	public void sendHtmlEmail(MimeMessage msg) {
+		// TODO Auto-generated method stub
 		
 	}
 
