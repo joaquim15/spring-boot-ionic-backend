@@ -39,7 +39,7 @@ public class ProdutoDTO implements Serializable {
 	public ProdutoDTO(Produto obj) {
 		this.id = obj.getId();
 		this.nome = obj.getNome();
-		this.preco = obj.getPreco();
+		this.preco = obj.getPreco().doubleValue();
 	}
 
 	public ProdutoDTO() {

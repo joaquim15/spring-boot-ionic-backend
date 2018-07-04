@@ -1,5 +1,7 @@
 package br.com.cursoudemy.services;
 
+import javax.mail.internet.MimeMessage;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.mail.SimpleMailMessage;
@@ -14,6 +16,15 @@ public class MockEmailService extends AbstractEmailService {
 		LOGGER.info(msg.toString());
 		LOGGER.info("Email enviado.");
 
+	}
+
+	@Override
+	public void sendHtmlEmail(MimeMessage msg) {
+		
+		LOGGER.info("Simulando envio de email html...");
+		LOGGER.info(msg.toString());
+		LOGGER.info("Email enviado.");
+		
 	}
 
 }

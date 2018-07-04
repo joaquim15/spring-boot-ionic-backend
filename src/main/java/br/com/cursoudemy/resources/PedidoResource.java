@@ -1,6 +1,8 @@
 package br.com.cursoudemy.resources;
 
+import java.io.IOException;
 import java.net.URI;
+import java.net.URISyntaxException;
 
 import javax.validation.Valid;
 
@@ -30,7 +32,7 @@ public class PedidoResource {
 	}
 	
 	@RequestMapping(method = RequestMethod.POST)
-	public ResponseEntity<Void> insert(@Valid @RequestBody Pedido obj) {
+	public ResponseEntity<Void> insert(@Valid @RequestBody Pedido obj) throws URISyntaxException, IOException {
 
 		obj = this.service.insert(obj);
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(obj.getId()).toUri();
