@@ -20,6 +20,7 @@ import br.com.cursoudemy.domain.PagamentoComCartao;
 import br.com.cursoudemy.domain.Pedido;
 import br.com.cursoudemy.domain.Produto;
 import br.com.cursoudemy.domain.enums.EstadoPagamento;
+import br.com.cursoudemy.domain.enums.Perfil;
 import br.com.cursoudemy.domain.enums.TipoCliente;
 import br.com.cursoudemy.repositories.CategoriaRepository;
 import br.com.cursoudemy.repositories.CidadeRepository;
@@ -123,15 +124,21 @@ public class DBService {
 		this.cidadeRepository.saveAll(Arrays.asList(cid1, cid2, cid3));
 
 		Cliente cli1 = new Cliente(null, "Joaquim de Castro Moura", "joaquim_castro_moura@hotmail.com", "11223344789", TipoCliente.PESSOAFISICA, pe.encode("123"));
-
 		cli1.getTelefones().addAll(Arrays.asList("986789299", "36960272"));
-
+		
+		Cliente cli2 = new Cliente(null, "Maria Ismenia", "maria_ismenia@hotmail.com", "24083734094", TipoCliente.PESSOAFISICA, pe.encode("123"));
+		cli2.getTelefones().addAll(Arrays.asList("986780000", "36960000"));
+		cli2.addPerfil(Perfil.ADMIN);
+		
 		Endereco e1 = new Endereco(null, "Rua Flores", "300", "Apto 203", "Jardim", "06268000", cli1, cid1);
 		Endereco e2 = new Endereco(null, "Avenida Matos", "105", "Sala800", "Centro", "06268000", cli1, cid2);
+		
+		Endereco e3 = new Endereco(null, "Avenida Presidente médice", "1000", null, "Osasco", "06268000", cli2, cid3);
 
 		cli1.getEnderecos().addAll(Arrays.asList(e1, e2));
+		cli2.getEnderecos().addAll(Arrays.asList(e3));
 
-		this.clienteRepository.saveAll(Arrays.asList(cli1));
+		this.clienteRepository.saveAll(Arrays.asList(cli1, cli2));
 		this.enderecoRepository.saveAll(Arrays.asList(e1, e2));
 
 		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
@@ -142,8 +149,7 @@ public class DBService {
 		Pagamento pagto1 = new PagamentoComCartao(null, EstadoPagamento.QUITADO, ped1, 6);
 		ped1.setPagamento(pagto1);
 
-		Pagamento pagto2 = new PagamentoComBoleto(null, EstadoPagamento.PENDENTE, ped2, sdf.parse("20/10/2017 00:00"),
-				null);
+		Pagamento pagto2 = new PagamentoComBoleto(null, EstadoPagamento.PENDENTE, ped2, sdf.parse("20/10/2017 00:00"), null);
 		ped2.setPagamento(pagto2);
 
 		cli1.getPedidos().addAll(Arrays.asList(ped1, ped2));
