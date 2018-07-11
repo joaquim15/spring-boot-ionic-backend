@@ -8,6 +8,7 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort.Direction;
+import org.springframework.security.access.AuthorizationServiceException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,11 +16,13 @@ import org.springframework.transaction.annotation.Transactional;
 import br.com.cursoudemy.domain.Cidade;
 import br.com.cursoudemy.domain.Cliente;
 import br.com.cursoudemy.domain.Endereco;
+import br.com.cursoudemy.domain.enums.Perfil;
 import br.com.cursoudemy.domain.enums.TipoCliente;
 import br.com.cursoudemy.dto.ClienteDTO;
 import br.com.cursoudemy.dto.ClienteNewDTO;
 import br.com.cursoudemy.repositories.ClienteRepository;
 import br.com.cursoudemy.repositories.EnderecoRepository;
+import br.com.cursoudemy.security.UserSS;
 import br.com.cursoudemy.services.exceptions.DataIntegrityExeception;
 import br.com.cursoudemy.services.exceptions.ObjectNotFoundExeption;
 
@@ -38,6 +41,12 @@ public class ClienteService {
 	public Cliente find(Integer id) {
 
 		Optional<Cliente> obj = repository.findById(id);
+		
+		UserSS user = UserService.authenticated();
+		
+		if(user == null || !user.hasRole(Perfil.ADMIN) && !id.equals(user.getId())) {
+			throw new AuthorizationServiceException("Acesso negado.");
+		}
 
 		return obj.orElseThrow(() -> new ObjectNotFoundExeption(
 				"Objeto não encontrado! Id: " + id + ", Tipo: " + Cliente.class.getName()));
