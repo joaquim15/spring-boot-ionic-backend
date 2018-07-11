@@ -58,10 +58,9 @@ public class CategoriaService {
 		return this.repository.findAll();
 	}
 
-	@SuppressWarnings("deprecation")
 	public Page<Categoria> findPage(Integer page, Integer linesPorPage, String orderBy, String direction) {
 
-		PageRequest pageRequest = new PageRequest(page, linesPorPage, Direction.valueOf(direction), orderBy);
+		PageRequest pageRequest = PageRequest.of(page, linesPorPage, Direction.valueOf(direction), orderBy);
 
 		return repository.findAll(pageRequest);
 

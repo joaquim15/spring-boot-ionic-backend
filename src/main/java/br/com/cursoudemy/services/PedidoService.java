@@ -8,9 +8,13 @@ import java.util.Date;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import br.com.cursoudemy.domain.Cliente;
 import br.com.cursoudemy.domain.ItemPedido;
 import br.com.cursoudemy.domain.PagamentoComBoleto;
 import br.com.cursoudemy.domain.Pedido;
@@ -18,13 +22,15 @@ import br.com.cursoudemy.domain.enums.EstadoPagamento;
 import br.com.cursoudemy.repositories.ItemPedidoRepository;
 import br.com.cursoudemy.repositories.PagamentoRepository;
 import br.com.cursoudemy.repositories.PedidoRepository;
+import br.com.cursoudemy.security.UserSS;
+import br.com.cursoudemy.services.exceptions.AuthorizationExeception;
 import br.com.cursoudemy.services.exceptions.ObjectNotFoundExeption;
 
 @Service
 public class PedidoService {
 
 	@Autowired
-	private PedidoRepository pedidoRepository;
+	private PedidoRepository repo;
 
 	@Autowired
 	private BoletoService boletoService;
@@ -51,7 +57,7 @@ public class PedidoService {
 
 	public Pedido find(Integer id) {
 
-		Optional<Pedido> obj = pedidoRepository.findById(id);
+		Optional<Pedido> obj = this.repo.findById(id);
 
 		return obj.orElseThrow(() -> new ObjectNotFoundExeption(
 				"Objeto não encontrado! Id: " + id + ", Tipo: " + Pedido.class.getName()));
@@ -75,7 +81,7 @@ public class PedidoService {
 			URL_CHEKOUT = this.checkoutTransparente.CheckoutTransparente(obj);
 		}
 
-		obj = this.pedidoRepository.save(obj);
+		obj = this.repo.save(obj);
 		this.pagamentoRepository.save(obj.getPagamento());
 		for (ItemPedido ip : obj.getItens()) {
 			ip.setDesconto(0.0);
@@ -97,5 +103,18 @@ public class PedidoService {
 		}
 
 		return obj;
+	}
+	
+	public Page<Pedido> findPage(Integer page, Integer linesPorPage, String orderBy, String direction) {
+		
+		UserSS user = UserService.authenticated();
+		
+		if(user == null ) {
+			throw new AuthorizationExeception("Acesso negado");
+		}
+
+		PageRequest pageRequest = PageRequest.of(page, linesPorPage, Direction.valueOf(direction), orderBy);
+		Cliente cliente = this.clienteService.find(user.getId());
+		return this.repo.findByCliente(cliente, pageRequest);
 	}
 }
