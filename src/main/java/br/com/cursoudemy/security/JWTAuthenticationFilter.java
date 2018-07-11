@@ -34,49 +34,33 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 
 	@Override
 
-	public Authentication attemptAuthentication(HttpServletRequest req,
-
-			HttpServletResponse res) throws AuthenticationException {
+	public Authentication attemptAuthentication(HttpServletRequest req, HttpServletResponse res) throws AuthenticationException {
 
 		try {
 
-			CredenciaisDTO creds = new ObjectMapper()
-
-					.readValue(req.getInputStream(), CredenciaisDTO.class);
-
-			UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(creds.getEmail(),
-					creds.getSenha(), new ArrayList<>());
-
-			Authentication auth = authenticationManager.authenticate(authToken);
+			CredenciaisDTO creds = new ObjectMapper().readValue(req.getInputStream(), CredenciaisDTO.class);
+			UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(creds.getEmail(), creds.getSenha(), new ArrayList<>());
+			Authentication auth = this.authenticationManager.authenticate(authToken);
 
 			return auth;
 
 		}
 
 		catch (IOException e) {
-
 			throw new RuntimeException(e);
-
 		}
-
 	}
 
 	@Override
 
-	protected void successfulAuthentication(HttpServletRequest req,
-
-			HttpServletResponse res,
-
-			FilterChain chain,
-
-			Authentication auth) throws IOException, ServletException {
+	protected void successfulAuthentication(HttpServletRequest req, 
+										    HttpServletResponse res, 
+										    FilterChain chain, 
+										    Authentication auth) throws IOException, ServletException {
 
 		String username = ((UserSS) auth.getPrincipal()).getUsername();
-
-		String token = jwtUtil.generationToken(username);
-
+		String token = this.jwtUtil.generationToken(username);
 		res.addHeader("Authorization", "Bearer " + token);
-
 		res.addHeader("access-control-expose-headers", "Authorization");
 
 	}
@@ -85,15 +69,12 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 
 		@Override
 
-		public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response,
-				AuthenticationException exception)
-
-				throws IOException, ServletException {
+		public void onAuthenticationFailure(HttpServletRequest request, 
+									        HttpServletResponse response, 
+									        AuthenticationException exception) throws IOException, ServletException {
 
 			response.setStatus(401);
-
 			response.setContentType("application/json");
-
 			response.getWriter().append(json());
 
 		}
