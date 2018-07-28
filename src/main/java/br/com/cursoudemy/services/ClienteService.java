@@ -25,6 +25,7 @@ import br.com.cursoudemy.dto.ClienteNewDTO;
 import br.com.cursoudemy.repositories.ClienteRepository;
 import br.com.cursoudemy.repositories.EnderecoRepository;
 import br.com.cursoudemy.security.UserSS;
+import br.com.cursoudemy.services.exceptions.AuthorizationExeception;
 import br.com.cursoudemy.services.exceptions.DataIntegrityExeception;
 import br.com.cursoudemy.services.exceptions.ObjectNotFoundExeption;
 
@@ -128,8 +129,18 @@ public class ClienteService {
 	}
 	
 	public URI uploadProfilePicture(MultipartFile objMult) {
-		return s3Service.uploafFile(objMult);
-		
-		
+
+		UserSS user = UserService.authenticated();
+
+		if (user == null) {
+			throw new AuthorizationExeception("Acesso |Negado");
+		}
+		URI uri = s3Service.uploafFile(objMult);
+
+		Optional<Cliente> cliente = repository.findById(user.getId());
+		cliente.get().setImageUrl(uri.toString());
+		repository.save(cliente.get());
+		return uri;
+
 	}
 }

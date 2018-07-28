@@ -44,7 +44,7 @@ public class Cliente implements Serializable {
 
 	@Column(name = "cli_tipo")
 	private Integer tipoCliente;
-	
+
 	@JsonIgnore
 	@Column(name = "cli_senha")
 	private String senha;
@@ -55,16 +55,18 @@ public class Cliente implements Serializable {
 	@ElementCollection
 	@CollectionTable(name = "tb_telefone")
 	private Set<String> telefones = new HashSet<>();
-	
-	@ElementCollection(fetch=FetchType.EAGER)
+
+	@ElementCollection(fetch = FetchType.EAGER)
 	@CollectionTable(name = "tb_perfil")
 	private Set<Integer> perfis = new HashSet<>();
 
 	@JsonIgnore
 	@OneToMany(mappedBy = "cliente")
 	private List<Pedido> pedidos = new ArrayList<>();
-	
-	// Por Padrão todos os usuarios teram com perfil como cliente. 
+
+	private String imageUrl;
+
+	// Por Padrão todos os usuarios teram com perfil como cliente.
 	public Cliente() {
 		addPerfil(Perfil.CLIENTE);
 	}
@@ -147,17 +149,25 @@ public class Cliente implements Serializable {
 	public String getSenha() {
 		return senha;
 	}
-	
-	public Set<Perfil> getPerfis(){
+
+	public Set<Perfil> getPerfis() {
 		return this.perfis.stream().map(x -> Perfil.toEnum(x)).collect(Collectors.toSet());
 	}
-	
+
 	public void addPerfil(Perfil perfil) {
 		perfis.add(perfil.getCod());
 	}
 
 	public void setSenha(String senha) {
 		this.senha = senha;
+	}
+
+	public String getImageUrl() {
+		return imageUrl;
+	}
+
+	public void setImageUrl(String imageUrl) {
+		this.imageUrl = imageUrl;
 	}
 
 	@Override
