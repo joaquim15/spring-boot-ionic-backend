@@ -19,7 +19,7 @@ import br.com.cursoudemy.services.exceptions.FileException;
 import br.com.cursoudemy.services.exceptions.ObjectNotFoundExeption;
 
 @ControllerAdvice
-public class ResouceExceptionHandler {
+public class ResourceExceptionHandler {
 
 	@ExceptionHandler(ObjectNotFoundExeption.class)
 	public ResponseEntity<StandartError> objectNotFound(ObjectNotFoundExeption e, HttpServletRequest request) {
