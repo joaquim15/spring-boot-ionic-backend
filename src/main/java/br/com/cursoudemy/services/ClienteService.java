@@ -51,10 +51,10 @@ public class ClienteService {
 
 	@Value("${img.prefix.client.profile}")
 	private String prefix;
-	
+
 	@Value("${img.profile.size}")
 	private Integer size;
-	
+
 	public Cliente find(Integer id) {
 
 		Optional<Cliente> obj = repository.findById(id);
@@ -100,6 +100,24 @@ public class ClienteService {
 	public List<Cliente> findAll() {
 		// TODO Auto-generated method stub
 		return this.repository.findAll();
+	}
+
+	public Cliente findByEmail(String email) {
+
+		UserSS user = UserService.authenticated();
+		
+		if (user == null || !user.hasRole(Perfil.ADMIN) && !email.equals(user.getUsername())) {
+			throw new AuthorizationExeception("Acesso Negado.");
+		}
+
+		Cliente obj = repository.findByEmail(email);
+		
+		if (obj == null) {
+			throw new ObjectNotFoundExeption(
+					"Objeto não encontrado! Id: " + user.getId() + ", Tipo: " + Cliente.class.getName());
+		}
+
+		return obj;
 	}
 
 	public Page<Cliente> findPage(Integer page, Integer linesPorPage, String orderBy, String direction) {
@@ -148,11 +166,11 @@ public class ClienteService {
 		if (user == null) {
 			throw new AuthorizationExeception("Acesso | Negado");
 		}
-		
+
 		BufferedImage jpgImage = imageService.getJpgImageFromFile(objMult);
 		jpgImage = imageService.cropSquare(jpgImage);
 		jpgImage = imageService.resize(jpgImage, size);
-		
+
 		String fileName = prefix + user.getId() + ".jpg";
 
 		return s3Service.uploafFile(imageService.getInputStream(jpgImage, "jpg"), fileName, "image");

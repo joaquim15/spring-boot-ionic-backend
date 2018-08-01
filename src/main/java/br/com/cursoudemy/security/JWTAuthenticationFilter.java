@@ -68,7 +68,6 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 	private class JWTAuthenticationFailureHandler implements AuthenticationFailureHandler {
 
 		@Override
-
 		public void onAuthenticationFailure(HttpServletRequest request, 
 									        HttpServletResponse response, 
 									        AuthenticationException exception) throws IOException, ServletException {
