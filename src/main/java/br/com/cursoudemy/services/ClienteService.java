@@ -51,7 +51,10 @@ public class ClienteService {
 
 	@Value("${img.prefix.client.profile}")
 	private String prefix;
-
+	
+	@Value("${img.profile.size}")
+	private Integer size;
+	
 	public Cliente find(Integer id) {
 
 		Optional<Cliente> obj = repository.findById(id);
@@ -143,9 +146,13 @@ public class ClienteService {
 		UserSS user = UserService.authenticated();
 
 		if (user == null) {
-			throw new AuthorizationExeception("Acesso |Negado");
+			throw new AuthorizationExeception("Acesso | Negado");
 		}
+		
 		BufferedImage jpgImage = imageService.getJpgImageFromFile(objMult);
+		jpgImage = imageService.cropSquare(jpgImage);
+		jpgImage = imageService.resize(jpgImage, size);
+		
 		String fileName = prefix + user.getId() + ".jpg";
 
 		return s3Service.uploafFile(imageService.getInputStream(jpgImage, "jpg"), fileName, "image");
