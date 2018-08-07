@@ -2,7 +2,6 @@ package br.com.cursoudemy.domain;
 
 import java.io.Serializable;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -10,22 +9,28 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
-@Entity(name = "tb_cidade")
+@Entity
 public class Cidade implements Serializable {
-
 	private static final long serialVersionUID = 1L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "cid_id")
 	private Integer id;
-
-	@Column(name = "cid_nome")
 	private String nome;
-	
+
 	@ManyToOne
 	@JoinColumn(name = "estado_id")
 	private Estado estado;
+
+	public Cidade() {
+	}
+
+	public Cidade(Integer id, String nome, Estado estado) {
+		super();
+		this.id = id;
+		this.nome = nome;
+		this.estado = estado;
+	}
 
 	public Integer getId() {
 		return id;
@@ -48,17 +53,6 @@ public class Cidade implements Serializable {
 	}
 
 	public void setEstado(Estado estado) {
-		this.estado = estado;
-	}
-
-	public Cidade() {
-		super();
-	}
-
-	public Cidade(Integer id, String nome, Estado estado) {
-		super();
-		this.id = id;
-		this.nome = nome;
 		this.estado = estado;
 	}
 
