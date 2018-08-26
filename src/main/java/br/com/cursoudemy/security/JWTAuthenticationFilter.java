@@ -33,7 +33,6 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 	}
 
 	@Override
-
 	public Authentication attemptAuthentication(HttpServletRequest req, HttpServletResponse res) throws AuthenticationException {
 
 		try {
@@ -52,14 +51,13 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 	}
 
 	@Override
-
 	protected void successfulAuthentication(HttpServletRequest req, 
 										    HttpServletResponse res, 
 										    FilterChain chain, 
 										    Authentication auth) throws IOException, ServletException {
 
 		String username = ((UserSS) auth.getPrincipal()).getUsername();
-		String token = this.jwtUtil.generationToken(username);
+		String token = jwtUtil.generationToken(username);
 		res.addHeader("Authorization", "Bearer " + token);
 		res.addHeader("access-control-expose-headers", "Authorization");
 

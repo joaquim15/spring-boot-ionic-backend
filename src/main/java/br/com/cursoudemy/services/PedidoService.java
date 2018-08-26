@@ -78,7 +78,7 @@ public class PedidoService {
 			PagamentoComBoleto pagto = (PagamentoComBoleto) obj.getPagamento();
 			this.boletoService.preencherPagamentoComBoleto(pagto, obj.getInstance());
 		} else {
-			URL_CHEKOUT = this.checkoutTransparente.CheckoutTransparente(obj);
+			//URL_CHEKOUT = this.checkoutTransparente.CheckoutTransparente(obj);
 		}
 
 		obj = this.repo.save(obj);

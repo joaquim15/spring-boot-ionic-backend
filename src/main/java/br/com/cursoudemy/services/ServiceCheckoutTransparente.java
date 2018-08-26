@@ -1,27 +1,15 @@
 package br.com.cursoudemy.services;
 
-import java.math.BigDecimal;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import br.com.cursoudemy.domain.Endereco;
-import br.com.cursoudemy.domain.ItemPedido;
+import com.amazonaws.services.dynamodbv2.document.Item;
+import com.amazonaws.services.ec2.model.Address;
+
 import br.com.cursoudemy.domain.Pedido;
-import br.com.uol.pagseguro.domain.Address;
-import br.com.uol.pagseguro.domain.Item;
-import br.com.uol.pagseguro.domain.Phone;
-import br.com.uol.pagseguro.domain.Sender;
-import br.com.uol.pagseguro.domain.SenderDocument;
-import br.com.uol.pagseguro.domain.Shipping;
-import br.com.uol.pagseguro.domain.checkout.Checkout;
-import br.com.uol.pagseguro.enums.Currency;
-import br.com.uol.pagseguro.enums.ShippingType;
-import br.com.uol.pagseguro.exception.PagSeguroServiceException;
-import br.com.uol.pagseguro.properties.PagSeguroConfig;
 
 @Service
-public class ServiceCheckoutTransparente {
+public class ServiceCheckoutTransparente {/*
 
 	private Item item;
 
@@ -105,4 +93,4 @@ public class ServiceCheckoutTransparente {
 		}
 		return this.checkoutURL;
 	}
-}
+*/}
